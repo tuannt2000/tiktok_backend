@@ -1,0 +1,63 @@
+.sidebar .nav-item .nav-link {
+    padding: 10px 1rem !important;
+}
+
+.nav-link i {
+    width: 20px;
+    text-align: center;
+}
+
+i.bi {
+    margin-left: 5px;
+}
+
+.top-0 {
+    top: 0;
+}
+
+.invalid > input {
+    border: 1px solid #e74a3b!important;
+}
+
+.alert-ps {
+    position: absolute;
+    width: 600px;
+    margin: auto;
+}
+  
+.alert {
+    animation: alert 3s;
+    opacity: 0;
+}
+
+.bg-re-password-image {
+    background: url(/img/reset-password.jpg);
+    background-position: center;
+    background-size: cover;
+}
+
+@keyframes alert { 
+    0% {
+        transform: translateY(-100%);
+        transform-origin: 0px 0px;
+        opacity: 0;
+    }
+
+    20% {
+        transform: translateY(0%);
+        transform-origin: 0px 0px;
+        opacity: 1;
+    }
+
+    80% {
+        transform: translateY(0%);
+        transform-origin: 0px 0px;
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-100%);
+        transform-origin: 0px 0px;
+        opacity: 0;
+    }
+}

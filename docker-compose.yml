@@ -1,0 +1,31 @@
+version: "3.7"
+services:
+  web:
+    build: ./docker/web/
+    image: tiktok-app
+    container_name: tiktok-app
+    volumes:
+    - .:/home/tiktok
+    - ./docker/web/httpd.conf:/etc/httpd/conf/httpd.conf
+    - ./docker/web/php.ini:/etc/php.ini
+    ports:
+    - 8000:80
+    depends_on:
+    - db
+    tty: true
+
+  db:
+    image: mysql:5.7
+    container_name: tiktok-db
+    restart: unless-stopped
+    ports:
+      - 4306:3306
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - ./docker/mysql:/docker-entrypoint-initdb.d
