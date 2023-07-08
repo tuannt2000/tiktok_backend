@@ -22,6 +22,7 @@ use App\Services\Api\ShareService;
 use App\Services\Api\TagService;
 use App\Services\Api\VideoService;
 use App\Services\Api\UserService;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -91,6 +92,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        URL::forceScheme('https');
     }
 }
