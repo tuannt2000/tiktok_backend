@@ -5,7 +5,6 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\Admin\VideosController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\URL;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,5 +31,3 @@ Route::get('/forgot-password',  [AuthController::class, 'forgotPassword'])->name
 Route::post('/forgot-password', [AuthController::class, 'postForgotPassword'])->name('forgot-password.post');
 Route::get('/reset-password',   [AuthController::class, 'resetPassword'])->name('reset-password');
 Route::post('/reset-password',  [AuthController::class, 'postResetPassword'])->name('reset-password.post');
-
-URL::forceScheme('https');
