@@ -67,9 +67,9 @@
 
 @section('vendor_js')
     <!-- Page level plugins -->
-    <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('js/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="/js/jquery.dataTables.min.js"></script>
+    <script src="/js/dataTables.bootstrap4.min.js'"></script>
 
     <!-- Page level custom scripts -->
-    <script src="{{ asset('js/datatables-demo.js') }}"></script>
+    <script src="/js/datatables-demo.js"></script>
 @endsection

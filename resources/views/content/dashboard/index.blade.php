@@ -171,9 +171,9 @@
 
 @section('vendor_js')
     <!-- Page level plugins -->
-    <script src="{{ asset('js/Chart.min.js') }}"></script>
+    <script src="/js/Chart.min.js"></script>
 
     <!-- Page level custom scripts -->
-    <script src="{{ asset('js/chart-area-demo.js') }}"></script>
-    <script src="{{ asset('js/chart-pie-demo.js') }}"></script>
+    <script src="/js/chart-area-demo.js"></script>
+    <script src="/js/chart-pie-demo.js"></script>
 @endsection
