@@ -42,7 +42,7 @@ class ActiveUser extends Command
     {
         $this->info('Start the command!');
         $current_date = date('Y-m-j');
-        $newdate = strtotime('-3 day', strtotime($current_date));
+        $newdate = strtotime('-1 day', strtotime($current_date));
         $newdate = date('Y-m-d', $newdate);
 
         try {
