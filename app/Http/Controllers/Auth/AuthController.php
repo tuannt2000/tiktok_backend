@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use Mail;
 
 class AuthController extends Controller
 {
@@ -120,5 +121,57 @@ class AuthController extends Controller
                 ],
             ], 400);
         }
+    }
+
+    public function forgetPassword(Request $request) 
+    {
+        $social_provider = 'normal';
+        $user = User::where([
+                'email' => $request->email,
+                'social_provider' => $social_provider,
+            ])->first();
+
+        if (!$user) {  
+            return response()->json([
+                'data' => [
+                    'code' => 404,
+                    'message' => trans('Email không tồn tại'),
+                ],
+            ], 404);
+        }
+
+        $new_password = $this->__generatePassword();
+        $user->password = Hash::make($new_password);
+        if (!$user->save()) {
+            return response()->json([
+                'data' => [
+                    'code' => 500,
+                    'message' => trans('Không thể tạo mật khẩu mới'),
+                ],
+            ], 500);
+        }
+
+        Mail::send('elements.email.forget_password_client', ['new_password' => $new_password], function($message) use($user){
+            $message->to($user->email);
+            $message->subject('Forget Password');
+        });
+
+        return response()->json([
+            'data' => [
+                'code' => 200,
+                'message' => "Đã gửi mật khẩu mới đến email"
+            ]
+        ]);
+    }
+
+    private function __generatePassword($length = 8){
+        $alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+        $pass = []; //remember to declare $pass as an array
+        $alphaLength = strlen($alphabet) - 1; //put the length -1 in cache
+        for ($i = 0; $i < $length; $i++) {
+            $n = rand(0, $alphaLength);
+            $pass[] = $alphabet[$n];
+        }
+        return implode($pass); //turn the array into a string
     }
 }

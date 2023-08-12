@@ -83,3 +83,4 @@ Route::get('/discoves', [DiscoveController::class, 'index']);
 Route::post('/redirectGoogle', [GoogleController::class, 'loginCallback']);
 Route::post('/login',    [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
+Route::post('/forget-password', [AuthController::class, 'forgetPassword']);
