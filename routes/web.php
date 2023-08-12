@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\Admin\VideosController;
+use App\Http\Controllers\Admin\ReportsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,6 +22,9 @@ Route::prefix('/')->middleware('auth')->group(function () {
     Route::get('/',       [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/users',  [UsersController::class, 'index'])->name('users');
     Route::get('/videos', [VideosController::class, 'index'])->name('videos');
+    Route::get('/reports', [ReportsController::class, 'index'])->name('reports');
+    Route::post('/reports/cancel-report/{video_id}', [ReportsController::class, 'cancelReport'])->name('cancelReport');
+    Route::post('/reports/delete-video-report/{video_id}',  [ReportsController::class, 'deleteVideoReport'])->name('deleteVideoReport');
 
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 });

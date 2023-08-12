@@ -43,6 +43,7 @@ class Video extends Model
         static::deleting(function($video) { // before delete() method call this
             $video->likes()->delete();
             $video->comments()->delete();
+            $video->messages()->delete();
         });
     }
 
@@ -54,6 +55,16 @@ class Video extends Model
     public function shares()
     {
         return $this->hasMany(Share::class);
+    }
+
+    public function messages()
+    {
+        return $this->hasMany(Message::class);
+    }
+
+    public function reports()
+    {
+        return $this->hasMany(Report::class);
     }
 
     public function comments()

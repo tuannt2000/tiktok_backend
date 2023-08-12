@@ -23,6 +23,7 @@
                                 <th>EMAIL</th>
                                 <th>NAME</th>
                                 <th>NICK NAME</th>
+                                <th>STATUS</th>
                                 <th>SOCIAL PROVIDER</th>
                                 <th>TICK</th>
                                 <th>BIO</th>
@@ -39,6 +40,7 @@
                                     <td>{{ $user->email }}</td>
                                     <td>{{ $user->full_name }}</td>
                                     <td>{{ $user->nickname }}</td>
+                                    <td>{{ $user->status_text }}</td>
                                     <td>{{ $user->social_provider }}</td>
                                     <td>{{ $user->tick ? 'Yes' : 'No' }}</td>
                                     <td>{{ $user->bio ?? 'No biography' }}</td>
@@ -68,7 +70,7 @@
 @section('vendor_js')
     <!-- Page level plugins -->
     <script src="/js/jquery.dataTables.min.js"></script>
-    <script src="/js/dataTables.bootstrap4.min.js'"></script>
+    <script src="/js/dataTables.bootstrap4.min.js"></script>
 
     <!-- Page level custom scripts -->
     <script src="/js/datatables-demo.js"></script>

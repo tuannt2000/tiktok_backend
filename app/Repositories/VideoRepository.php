@@ -176,6 +176,19 @@ class VideoRepository extends BaseRepository implements VideoRepositoryInterface
         return $video;
     }
 
+    public function getVideoReports() {
+        return $this->model
+            ->whereHas('reports', function ($query) { 
+                return $query->where('progress', 'unprocessed')->groupBy('value');
+            })
+            ->with(['reports' => function ($query) {
+                return $query->where('progress', 'unprocessed')->groupBy('value');
+            }])
+            ->withCount('reports')
+            ->orderByDesc('reports_count')
+            ->get();
+    }
+
     private function __getQueryListVideo () {
         $query = $this->model
             ->with(['user' => function($query) { 

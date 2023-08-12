@@ -25,7 +25,9 @@ class User extends Authenticatable
         'nickname',
         'birthday',
         'avatar',
-        'role'
+        'role',
+        'status',
+        'date_limit'
     ];
 
     /**
@@ -71,6 +73,18 @@ class User extends Authenticatable
     public function getFullNameAttribute()
     {
         return $this->first_name . ' ' . $this->last_name;
+    }
+
+    public function getStatusTextAttribute()
+    {
+        switch ($this->attributes['status']) {
+            case 'A':
+                return 'ACTIVE';
+            case 'L':
+                return 'LIMIT';
+            default:
+                return 'UNKNOWN';
+        }
     }
 
     public function getAvatarAttribute()

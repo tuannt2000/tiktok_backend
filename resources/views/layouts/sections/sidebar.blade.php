@@ -28,6 +28,11 @@
             <i class="bi bi-camera-video-fill"></i>
             <span>Video</span></a>
     </li>
+    <li class="nav-item {{ $active == 'reports' ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('reports') }}">
+            <i class="bi bi-flag-fill"></i>
+            <span>Report</span></a>
+    </li>
 
     <!-- Divider -->
     <hr class="sidebar-divider">

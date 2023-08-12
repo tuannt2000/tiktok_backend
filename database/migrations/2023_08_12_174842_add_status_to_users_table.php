@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddPasswordAndRoleToUsersTable extends Migration
+class AddStatusToUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,8 +14,8 @@ class AddPasswordAndRoleToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('password')->nullable()->after('email');
-            $table->string('role')->default('USER')->after('password');
+            $table->string('status')->default('A')->after('role');
+            $table->date('date_limit')->nullable()->after('status');
         });
     }
 
@@ -27,8 +27,8 @@ class AddPasswordAndRoleToUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('password');
-            $table->dropColumn('role');
+            $table->dropColumn('status');
+            $table->dropColumn('date_limit');
         });
     }
 }

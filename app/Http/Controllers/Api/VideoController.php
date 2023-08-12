@@ -76,6 +76,10 @@ class VideoController extends Controller
      */
     public function upload(Request $request) {
         try {
+            if (Auth::user()->status === 'L') {
+                throw new \Exception('permission denied');
+            }
+            
             $video = $request->file('video_file');
             $cover_image = $request->file('cover_image_file');
 

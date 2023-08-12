@@ -11,4 +11,5 @@ interface VideoRepositoryInterface extends BaseRepositoryInterface
     public function getMyVideoLike($users_friend);
     public function uploadVideo($data);
     public function getTopVideo($key_word);
+    public function getVideoReports();
 }
