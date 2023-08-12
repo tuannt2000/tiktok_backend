@@ -41,11 +41,25 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         return $query->get();
     }
 
-    public function getListAccountOffer ($followerIds)
+    public function getListAccountOffer ($follower_ids, $friend_ids)
     {
         return $this->model
+            ->select(
+                'users.*',
+                DB::raw('Count(f1.user_follower_id) as mutual_friend_count')
+            )
+            ->leftJoin('follows AS f1', function ($join) use($friend_ids) {
+                $join->on('f1.user_follower_id', '=', 'users.id')
+                    ->join('follows AS f2', function ($query) {
+                        $query->on('f1.user_id', '=', 'f2.user_follower_id')
+                            ->on('f1.user_follower_id', '=', 'f2.user_id');
+                    })
+                    ->whereIn('f1.user_id', $friend_ids);
+            })
             ->withCount(['likes', 'followers'])
-            ->whereNotIn('users.id', $followerIds)
+            ->whereNotIn('users.id', $follower_ids)
+            ->groupBy('f1.user_follower_id')
+            ->orderBy('mutual_friend_count', 'desc')
             ->orderBy('likes_count', 'desc')
             ->take(6)
             ->get();

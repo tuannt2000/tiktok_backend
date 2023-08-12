@@ -24,7 +24,9 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 
     public function getListComment($video_id) {
         return $this->model
-            ->with('user')
+            ->with(['user' => function ($query) {
+                $query->withCount(['likes', 'followers']);
+            }])
             ->where('video_id', $video_id)->get();
     }
 }

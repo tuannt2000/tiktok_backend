@@ -88,12 +88,14 @@ class UserService extends AbstractService implements UserServiceInterface
         }
     }
 
-    public function listAccountOffer ($id)
+    public function listAccountOffer ()
     {
         try {
-            $followerIds = Follow::ofPluckIdUserFollowing($id);
-            $followerIds[] = $id;
-            $datas = $this->userRepository->getListAccountOffer($followerIds);
+            $user_id = Auth::user()->id;
+            $follower_ids = Follow::ofPluckIdUserFollowing($user_id);
+            $follower_ids[] = $user_id;
+            $friend_ids = Follow::ofListIdFriend($user_id);
+            $datas = $this->userRepository->getListAccountOffer($follower_ids, $friend_ids);
 
             return [
                 'code' => 200,

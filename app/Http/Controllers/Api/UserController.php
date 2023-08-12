@@ -29,8 +29,8 @@ class UserController extends Controller
         return response()->json($result, 200);
     }
 
-    public function listAccountOffer (Request $request) {
-        $result = $this->userService->listAccountOffer($request->id);
+    public function listAccountOffer () {
+        $result = $this->userService->listAccountOffer();
 
         return response()->json($result, 200);
     }
