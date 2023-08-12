@@ -53,8 +53,27 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
 
     public function getUserByNickname ($nickname)
     {
+        $user_id = null;
+        if (Auth::check()) {
+            $user_id = Auth::user()->id;
+            $select_add = '(CASE WHEN follows.user_follower_id IS NULL THEN False ELSE True END) AS is_user_following';
+        } else {
+            $select_add = 'false AS is_user_following';
+        }
+
         return $this->model
-            ->select('users.*', DB::raw("CONCAT(first_name, ' ', last_name) AS full_name"))
+            ->select(
+                'users.*',
+                DB::raw("CONCAT(first_name, ' ', last_name) AS full_name"),
+                DB::raw($select_add)
+            )
+            ->when($user_id, function ($query) use ($user_id) {
+                $query->leftJoin('follows', function ($join) use ($user_id) {
+                        $join->on('follows.user_follower_id', '=', 'users.id')
+                            ->where('follows.user_id', $user_id)
+                            ->whereNull('follows.deleted_at');
+                    });
+            })
             ->where('nickname', $nickname)
             ->first();
     }

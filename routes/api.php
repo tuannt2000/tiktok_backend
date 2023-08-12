@@ -34,6 +34,7 @@ Route::prefix('users')->group(function () {
     Route::get ('/search',         [UserController::class, 'findUser']);
     Route::get ('/search/logined', [UserController::class, 'findUser'])->middleware('auth:api');
     Route::get ('/profile',        [UserController::class, 'getUserByNickname']);
+    Route::get ('/profile/logined',[UserController::class, 'getUserByNickname'])->middleware('auth:api');;
     Route::post('/account-offer',  [UserController::class, 'listAccountOffer']);
     Route::post('/following',      [UserController::class, 'listFollowing']);
     Route::get('/friend',          [UserController::class, 'listFriend'])->middleware('auth:api');
