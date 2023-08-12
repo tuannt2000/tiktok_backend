@@ -87,8 +87,8 @@ class AuthController extends Controller
                 'email' => $request->email,
                 'social_provider' => $social_provider,
                 'social_id' => 0,
-                'first_name' => explode("@", $request->email)[0],
-                'last_name' => '',
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
                 'nickname' => 'user' . $nickname,
                 'birthday' => date("Y-m-d H:i:s")
             ]);
