@@ -9,6 +9,7 @@
 namespace App\Services\Api;
 
 use App\Contracts\Repositories\FollowRepositoryInterface;
+use App\Contracts\Repositories\NotificationRepositoryInterface;
 use App\Contracts\Repositories\UserRepositoryInterface;
 use App\Contracts\Services\Api\UserServiceInterface;
 use App\Models\Follow;
@@ -30,16 +31,23 @@ class UserService extends AbstractService implements UserServiceInterface
     protected $followRepository;
 
     /**
+     * @var NotificationRepositoryInterface
+     */
+    protected $notificationRepository;
+
+    /**
      * UserService constructor.
      * @param UserRepositoryInterface $userRepository
      */
     public function __construct(
         UserRepositoryInterface $userRepository,
-        FollowRepositoryInterface $followRepository
+        FollowRepositoryInterface $followRepository,
+        NotificationRepositoryInterface $notificationRepository
     )
     {
         $this->userRepository = $userRepository;
         $this->followRepository = $followRepository;
+        $this->notificationRepository = $notificationRepository;
     }
 
     /**
@@ -210,6 +218,42 @@ class UserService extends AbstractService implements UserServiceInterface
             return [
                 'code' => 200,
                 'data' => $data
+            ];
+        } catch (\Throwable $err) {
+            Log::error($err);
+
+            return [
+                'code' => 400,
+                'message' => $err->getMessage()
+            ];
+        }
+    }
+
+    public function getNotification() {
+        try {
+            $data = $this->notificationRepository->getNotification();
+
+            return [
+                'code' => 200,
+                'data' => $data
+            ];
+        } catch (\Throwable $err) {
+            Log::error($err);
+
+            return [
+                'code' => 400,
+                'message' => $err->getMessage()
+            ];
+        }
+    }
+
+    public function updateNotification() {
+        try {
+            $data = $this->notificationRepository->updateNotification();
+
+            return [
+                'code' => 200,
+                'message' => 'updated successfully'
             ];
         } catch (\Throwable $err) {
             Log::error($err);

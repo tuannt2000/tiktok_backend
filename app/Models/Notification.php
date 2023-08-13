@@ -29,19 +29,20 @@ class Notification extends Model
     public static function booted()
     {
         static::created(function($notification){
-            if ($notification->checked) {
-                return;
-            }
             event(new NotificationEvent($notification));
-            $notification->update(['checked' => true]);
         });
 
-        static::updated(function($notification){
-            if ($notification->checked) {
-                return;
-            }
-            event(new NotificationEvent($notification));
-            $notification->update(['checked' => true]);
-        });
+        // static::updated(function($notification){
+        //     if ($notification->checked) {
+        //         return;
+        //     }
+        //     event(new NotificationEvent($notification));
+        //     $notification->update(['checked' => true]);
+        // });
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

@@ -12,4 +12,6 @@ interface UserServiceInterface
     public function getInfoUser();
     public function findTopUser($key_word);
     public function getListFriend();
+    public function getNotification();
+    public function updateNotification();
 }

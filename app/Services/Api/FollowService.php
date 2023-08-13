@@ -5,6 +5,7 @@ namespace App\Services\Api;
 use App\Contracts\Repositories\FollowRepositoryInterface;
 use App\Contracts\Repositories\RoomRepositoryInterface;
 use App\Contracts\Services\Api\FollowServiceInterface;
+use App\Models\Notification;
 use App\Services\AbstractService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -43,7 +44,7 @@ class FollowService extends AbstractService implements FollowServiceInterface
         try {
             $follow = $this->followRepository->findFollow($data);
             if (is_null($follow)) {
-                $this->followRepository->create([
+                $follow = $this->followRepository->create([
                     'user_id' => Auth::user()->id,
                     'user_follower_id' => $data['user_follower_id']
                 ]);
@@ -57,6 +58,23 @@ class FollowService extends AbstractService implements FollowServiceInterface
 
             if (!$this->__createRoom([Auth::user()->id, $data['user_follower_id']])) {
                 throw new \Exception('Could not create room');
+            }
+           
+            $option_notification = [
+                'user_id' => Auth::user()->id,
+                'recipient_id' => $data['user_follower_id'],
+                'table_name' => 'follows'
+            ];
+            $notification = Notification::where($option_notification)->first();
+            if (is_null($follow->deleted_at)) {
+                if (!$notification) {
+                    $option_notification['table_id'] = $follow->id;
+                    Notification::create($option_notification);
+                }
+            } else {
+                if ($notification) {
+                    $notification->delete();
+                }
             }
             DB::commit();
 

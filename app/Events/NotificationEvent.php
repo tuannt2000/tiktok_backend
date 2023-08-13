@@ -3,11 +3,14 @@
 namespace App\Events;
 
 use App\Models\Notification;
+use App\Models\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class NotificationEvent implements ShouldBroadcast
 {
@@ -28,14 +31,21 @@ class NotificationEvent implements ShouldBroadcast
     public function broadcastWith()
     {
         try {
-            $notification = Notification::findOrFail($this->notification->id);
-            return [
-                'id'           => $notification->id,
-                'user_id'      => $notification->user_id,
-                'recipient_id' => $notification->recipient_id,
-                'table_name'   => $notification->table_name
-            ];
+            $users_id = $this->notification->recipient_id;
+            $notification = Notification::where('id', $this->notification->id)
+                ->with(['user' => function ($query) use ($users_id) {
+                    $query->leftJoin('follows', function ($query) use ($users_id) {
+                            $query->on('follows.user_follower_id', '=', 'users.id')
+                                ->whereNull('follows.deleted_at')
+                                ->where('follows.user_id', $users_id);
+                        })
+                        ->select('users.*', DB::raw('(CASE WHEN follows.user_id IS NOT NULL THEN True ELSE False END) AS is_user_following'));
+                }])
+                ->first()
+                ->toArray();
+            return $notification;
         } catch (\Exception $e) {
+            Log::error($e);
             return [];
         }
     }

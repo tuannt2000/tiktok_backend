@@ -38,6 +38,8 @@ Route::prefix('users')->group(function () {
     Route::post('/account-offer',  [UserController::class, 'listAccountOffer'])->middleware('auth:api');;
     Route::post('/following',      [UserController::class, 'listFollowing']);
     Route::get('/friend',          [UserController::class, 'listFriend'])->middleware('auth:api');
+    Route::get ('/notifications',  [UserController::class, 'getNotifications'])->middleware('auth:api');
+    Route::post('/notifications/update', [UserController::class, 'updateNotification'])->middleware('auth:api');
 });
 
 Route::prefix('search')->group(function () {
