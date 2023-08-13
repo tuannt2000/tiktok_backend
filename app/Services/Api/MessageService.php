@@ -54,7 +54,7 @@ class MessageService extends AbstractService implements MessageServiceInterface
         }
     }
 
-     /**
+    /**
      * @param $params
      * @return array
      */
@@ -74,5 +74,24 @@ class MessageService extends AbstractService implements MessageServiceInterface
                 'message' => $err
             ]);
         }
+    }
+
+    /**
+     * @param $message_id
+     * @return array
+     */
+    public function delete($message_id)
+    {
+        if ($this->messageRepository->delete($message_id)) {
+            return [
+                'code' => 200,
+                'message' => 'Deleted successfully'
+            ];
+        }
+        
+        return response()->json([
+            'code' => 400,
+            'message' => 'Deleted failed'
+        ]);
     }
 }

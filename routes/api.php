@@ -55,6 +55,7 @@ Route::prefix('/')->middleware('auth:api')->group(function () {
     Route::get ('/rooms',    [RoomController::class, 'index']);
     Route::get ('/messages', [MessageController::class, 'index']);
     Route::post('/message',  [MessageController::class, 'store']);
+    Route::post('/message/delete', [MessageController::class, 'delete']);
     Route::post('/follow',   [FollowController::class, 'store']);
     Route::post('/notification', [RoomController::class, 'removeNotification']);
 

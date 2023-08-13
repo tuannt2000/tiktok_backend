@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Message extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $table = 'messages';
 
@@ -49,11 +50,15 @@ class Message extends Model
 
     public function getSocialProviderAttribute()
     {
-        return $this->attributes['social_provider'];
+        return $this->attributes['social_provider'] ?? null;
     }
 
     public function getAvatarAttribute()
     {
+        if (!isset($this->attributes['social_provider']) || !isset($this->attributes['social_provider'])) {
+            return null;
+        }
+
         if ($this->attributes['social_provider'] === 'normal' && !is_null($this->attributes['avatar'])) {
             return env('APP_URL') . $this->attributes['avatar'];
         }

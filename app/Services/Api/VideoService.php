@@ -375,7 +375,7 @@ class VideoService extends AbstractService implements VideoServiceInterface
                     throw new \Exception('Could not find room');
                 }
 
-                $this->messageRepository->create([
+                $message = $this->messageRepository->create([
                     'room_id'   => $room_id,
                     'user_id'   => Auth::user()->id,
                     'video_id'  => $video_id,
@@ -384,9 +384,8 @@ class VideoService extends AbstractService implements VideoServiceInterface
                 ]);
 
                 $datas_share[] = [
-                    'room_id'   => $room_id,
-                    'user_id'   => Auth::user()->id,
-                    'video_id'  => $video_id
+                    'id' => $message->id,
+                    'room_id' => $room_id
                 ];
             }
 

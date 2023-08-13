@@ -9,7 +9,9 @@
 namespace App\Repositories;
 
 use App\Contracts\Repositories\MessageRepositoryInterface;
+use App\Models\Follow;
 use App\Models\Message;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class MessageRepository extends BaseRepository implements MessageRepositoryInterface
@@ -25,6 +27,8 @@ class MessageRepository extends BaseRepository implements MessageRepositoryInter
 
     public function getListMessages($room_id, $users_following)
     {
+        $users_following = Follow::ofPluckIdUserFollowing(Auth::user()->id);
+        
         if (!empty($users_following)) {
             $select_following = implode(', ', $users_following);
             $select_add = '(CASE WHEN user_id IN (' . $select_following . ') THEN True ELSE False END) AS is_user_following';
@@ -33,6 +37,8 @@ class MessageRepository extends BaseRepository implements MessageRepositoryInter
         }
 
         $messages = $this->model
+            ->withTrashed()
+            ->select('users.*', 'messages.*')
             ->leftJoin('users', 'users.id', '=', 'messages.user_id')
             ->with(['video' => function($query) use($select_add) {
                 return $query

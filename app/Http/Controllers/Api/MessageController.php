@@ -36,7 +36,14 @@ class MessageController extends Controller
         $params = $request->all();
         $params['date_send'] = Carbon::now();
         $result = $this->messageService->store($params);
-        event(new MessageEvent($params));
+        event(new MessageEvent(['id' => $result['data']->id, 'room_id' => $result['data']->room_id]));
+
+        return response()->json($result, 200);
+    }
+
+    public function delete(Request $request) {
+        $message_id = $request->id;
+        $result = $this->messageService->delete($message_id);
 
         return response()->json($result, 200);
     }

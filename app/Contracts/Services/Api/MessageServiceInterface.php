@@ -6,4 +6,5 @@ interface MessageServiceInterface
 {
     public function index($room_id);
     public function store($params);
+    public function delete($params);
 }
