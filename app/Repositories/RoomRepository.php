@@ -54,9 +54,9 @@ class RoomRepository extends BaseRepository implements RoomRepositoryInterface
                 $query->whereRaw('m1.date_send = (select max(m2.date_send) from messages as m2 where m2.room_id = m1.room_id and rooms.user_id !=' . $user_id . ')');
             })
             ->leftJoin('notifications', function ($query) use ($user_id) {
-                $query->on('notifications.table_id', '=', 'm1.id')
+                $query->on('notifications.user_id', '=', 'rooms.user_id')
                     ->where('notifications.table_name', 'messages')
-                    ->where('notifications.user_id', '!=', $user_id);
+                    ->where('notifications.recipient_id', '=', $user_id);
             })
             ->whereIn('rooms.room_id', $rooms_id)
             ->where('rooms.user_id', '!=', $user_id)
