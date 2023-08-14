@@ -45,6 +45,7 @@ class RoomRepository extends BaseRepository implements RoomRepositoryInterface
                         END) AS created_at'),
                 DB::raw('(CASE 
                         WHEN notifications.checked = 1 THEN 1
+                        WHEN notifications.id IS NULL THEN 1
                         ELSE 0
                         END) AS readed')
             )
