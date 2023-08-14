@@ -249,7 +249,7 @@ class UserService extends AbstractService implements UserServiceInterface
 
     public function updateNotification() {
         try {
-            $data = $this->notificationRepository->updateNotification();
+            $this->notificationRepository->updateNotification();
 
             return [
                 'code' => 200,
@@ -263,5 +263,37 @@ class UserService extends AbstractService implements UserServiceInterface
                 'message' => $err->getMessage()
             ];
         }
+    }
+
+    public function getNotificationsMessages() {
+        try {
+            $data = $this->notificationRepository->getNotificationsMessages();
+
+            return [
+                'code' => 200,
+                'data' => $data
+            ];
+        } catch (\Throwable $err) {
+            Log::error($err);
+
+            return [
+                'code' => 400,
+                'message' => $err->getMessage()
+            ];
+        }
+    }
+
+    public function updateNotificationsMessage($notification_id) {
+        if ( $this->notificationRepository->update($notification_id, ['checked' => 1])) {
+            return [
+                'code' => 200,
+                'message' => 'Updated notification successfully'
+            ];
+        }
+
+        return [
+            'code' => 400,
+            'message' => 'Update notification failed'
+        ];
     }
 }

@@ -21,10 +21,4 @@ class RoomController extends Controller
 
         return response()->json($result, 200);
     }
-
-    public function removeNotification (Request $request) {
-        $result = $this->roomService->removeNotification($request->notification_id);
-
-        return response()->json($result, 200);
-    }
 }

@@ -56,28 +56,4 @@ class RoomService extends AbstractService implements RoomServiceInterface
             ];
         }
     }
-
-    /**
-     * @param $notification_id
-     * @return array
-     */
-    public function removeNotification($notification_id)
-    {
-        try {
-            $notification = $this->notificationRepository->findOrFail($notification_id);
-            $this->notificationRepository->delete($notification->id);
-
-            return [
-                'code' => 200,
-                'message' => "Delete notification successfully"
-            ];
-        } catch (\Throwable $err) {
-            Log::error($err);
-            
-            return [
-                'code' => 400,
-                'message' => $err,
-            ];
-        }
-    }
 }

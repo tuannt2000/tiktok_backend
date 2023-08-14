@@ -45,4 +45,13 @@ class NotificationRepository extends BaseRepository implements NotificationRepos
             ])
             ->update(['checked' => 1]);
     }
+
+    public function getNotificationsMessages() {
+        $users_id = Auth::user()->id;
+        return $this->model
+            ->where('recipient_id', $users_id)
+            ->where('table_name', 'messages')
+            ->where('checked', 0)
+            ->get();
+    }
 }

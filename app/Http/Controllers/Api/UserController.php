@@ -81,4 +81,16 @@ class UserController extends Controller
 
         return response()->json($result, $result['code']);
     }
+
+    public function getNotificationsMessages () {
+        $result = $this->userService->getNotificationsMessages();
+
+        return response()->json($result, $result['code']);
+    }
+
+    public function updateNotificationsMessage (Request $request) {
+        $result = $this->userService->updateNotificationsMessage($request->id);
+
+        return response()->json($result, $result['code']);
+    }
 }

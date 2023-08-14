@@ -37,9 +37,11 @@ Route::prefix('users')->group(function () {
     Route::get ('/profile/logined',[UserController::class, 'getUserByNickname'])->middleware('auth:api');;
     Route::post('/account-offer',  [UserController::class, 'listAccountOffer'])->middleware('auth:api');;
     Route::post('/following',      [UserController::class, 'listFollowing']);
-    Route::get('/friend',          [UserController::class, 'listFriend'])->middleware('auth:api');
+    Route::get ('/friend',          [UserController::class, 'listFriend'])->middleware('auth:api');
     Route::get ('/notifications',  [UserController::class, 'getNotifications'])->middleware('auth:api');
     Route::post('/notifications/update', [UserController::class, 'updateNotification'])->middleware('auth:api');
+    Route::get ('/notifications/messages',  [UserController::class, 'getNotificationsMessages'])->middleware('auth:api');
+    Route::post('/notifications/messages/update', [UserController::class, 'updateNotificationsMessage'])->middleware('auth:api');
 });
 
 Route::prefix('search')->group(function () {
@@ -57,7 +59,6 @@ Route::prefix('/')->middleware('auth:api')->group(function () {
     Route::post('/message',  [MessageController::class, 'store']);
     Route::post('/message/delete', [MessageController::class, 'delete']);
     Route::post('/follow',   [FollowController::class, 'store']);
-    Route::post('/notification', [RoomController::class, 'removeNotification']);
 
     Route::prefix('video')->group(function () {
         Route::get ('/',         [VideoController::class, 'index']);

@@ -24,3 +24,7 @@ Broadcast::channel('room.{id}', function ($user, $id) {
 Broadcast::channel('notification.{id}', function () {
     return true;
 });
+
+Broadcast::channel('notification_message.{id}', function () {
+    return true;
+});

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Events\NotificationEvent;
+use App\Events\NotificationMessageEvent;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -29,16 +30,18 @@ class Notification extends Model
     public static function booted()
     {
         static::created(function($notification){
-            event(new NotificationEvent($notification));
+            if ($notification->table_name !== 'messages') {
+                event(new NotificationEvent($notification));
+            } else {
+                event(new NotificationMessageEvent($notification));
+            }
         });
 
-        // static::updated(function($notification){
-        //     if ($notification->checked) {
-        //         return;
-        //     }
-        //     event(new NotificationEvent($notification));
-        //     $notification->update(['checked' => true]);
-        // });
+        static::updated(function($notification){
+            if (!$notification->checked && $notification->table_name === 'messages') {
+                event(new NotificationMessageEvent($notification));
+            }
+        });
     }
 
     public function user()

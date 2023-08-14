@@ -14,4 +14,6 @@ interface UserServiceInterface
     public function getListFriend();
     public function getNotification();
     public function updateNotification();
+    public function getNotificationsMessages();
+    public function updateNotificationsMessage($notification_id);
 }
