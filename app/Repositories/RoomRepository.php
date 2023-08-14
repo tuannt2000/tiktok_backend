@@ -44,7 +44,7 @@ class RoomRepository extends BaseRepository implements RoomRepositoryInterface
                         ELSE m1.date_send
                         END) AS created_at'),
                 DB::raw('(CASE 
-                        WHEN notifications.id is NULL THEN 1
+                        WHEN notifications.checked = 1 THEN 1
                         ELSE 0
                         END) AS readed')
             )
@@ -56,8 +56,7 @@ class RoomRepository extends BaseRepository implements RoomRepositoryInterface
             ->leftJoin('notifications', function ($query) use ($user_id) {
                 $query->on('notifications.table_id', '=', 'm1.id')
                     ->where('notifications.table_name', 'messages')
-                    ->where('notifications.user_id', '!=', $user_id)
-                    ->where('notifications.checked', 0);
+                    ->where('notifications.user_id', '!=', $user_id);
             })
             ->whereIn('rooms.room_id', $rooms_id)
             ->where('rooms.user_id', '!=', $user_id)
